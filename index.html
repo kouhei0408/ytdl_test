@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youtube Downloader</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    .container {
+        max-width: 600px;
+        margin: auto;
+    }
+    .input-group {
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Youtube Downloader</h1>
+    <div class="input-group">
+        <label for="youtube-url">YoutubeのURL</label><br>
+        <input type="text" id="youtube-url" size="50">
+    </div>
+    <div class="input-group">
+        <label for="download-location">ダウンロード先のフォルダ（省略可）</label><br>
+        <input type="text" id="download-location" size="50">
+    </div>
+    <div class="input-group">
+        <label><input type="checkbox" id="audio-only">音声のみ</label>
+    </div>
+    <button onclick="downloadYoutube()" style="margin-bottom: 30px;">ダウンロード</button>
+    <div id="error-message" style="color: red;"></div>
+</div>
+
+<script>
+    function downloadYoutube() {
+        var youtubeUrl = document.getElementById('youtube-url').value;
+        var downloadLocation = document.getElementById('download-location').value;
+        var audioOnly = document.getElementById('audio-only').checked;
+
+        // エラーメッセージをリセット
+        document.getElementById('error-message').textContent = '';
+
+        // URLの入力チェック
+        if (!youtubeUrl || typeof youtubeUrl !== 'string') {
+            document.getElementById('error-message').textContent = 'URLには文字列を入れてください';
+            return;
+        }
+
+        // ダウンロード先フォルダの入力チェック
+        if (!downloadLocation || typeof downloadLocation !== 'string') {
+            downloadLocation = './'; // デフォルト値を設定
+        }
+
+        // ダウンロード用URLを生成
+        var downloadUrl = '/download?youtubeUrl=' + encodeURIComponent(youtubeUrl) +
+            '&downloadLocation=' + encodeURIComponent(downloadLocation) +
+            '&audioOnly=' + audioOnly;
+
+        // ダウンロード用URLにリダイレクト
+        window.location.href = downloadUrl;
+    }
+</script>
+</body>
+</html>
